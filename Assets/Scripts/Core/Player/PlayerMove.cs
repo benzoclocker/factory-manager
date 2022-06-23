@@ -33,7 +33,7 @@ namespace Core.Player
         }
 
         private void CalculateDirection() => 
-            _moveDirection = _inputService.Direction * Time.deltaTime;
+            _moveDirection = _inputService.Direction.normalized * 12.0f * Time.deltaTime;
 
         private void Move() => 
             _characterController.Move(_moveDirection);
