@@ -7,14 +7,12 @@ namespace Core.Player
     {
         private IInputService _inputService;
 
-        public void Init(IInputService inputService)
+        private float _rotateSpeed;
+
+        public void Init(IInputService inputService, float rotateSpeed)
         {
             _inputService = inputService;
-        }
-
-        private void Awake()
-        {
-            _inputService = new InputService();
+            _rotateSpeed = rotateSpeed;
         }
 
         private void Update()
@@ -29,7 +27,7 @@ namespace Core.Player
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, 
                 Quaternion.LookRotation(_inputService.Direction),
-                10 * Time.deltaTime);
+                _rotateSpeed * Time.deltaTime);
         }
     }
 }

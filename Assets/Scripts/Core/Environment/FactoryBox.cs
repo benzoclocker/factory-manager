@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Core.Environment
 {
@@ -12,11 +13,6 @@ namespace Core.Environment
         {
             BoxType = boxType;
             BoxTransform = boxTransform;
-        }
-
-        private void Start()
-        {
-            Init(PickableBoxType.First, transform);
         }
     }
 }

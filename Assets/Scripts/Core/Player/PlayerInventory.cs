@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using Core.Environment;
 using Core.Factory;
 using UnityEngine;
@@ -10,14 +9,19 @@ namespace Core.Player
     public class PlayerInventory : MonoBehaviour
     {
         [SerializeField] private Transform _inventoryPlace;
+        [SerializeField] private Vector3 _inventoryItemOffset;
         
         private Stack<IPickable> _pickableBoxes = new Stack<IPickable>();
         private TriggerObserver _triggerObserver;
-        private PickableBoxType _currentBoxType;
-        private Vector3 _inventoryItemOffset = new Vector3(0.0f, 1.0f, 0.0f);
+        public PickableBoxType _currentBoxType;
 
         private bool _readyToDrop = true;
-        private int _maxBoxCount = 3;
+        private int _maxBoxCount;
+
+        public void Init(int maxBoxCount)
+        {
+            _maxBoxCount = maxBoxCount;
+        }
 
         private void Awake()
         {
@@ -30,7 +34,7 @@ namespace Core.Player
         {
             if (other.TryGetComponent(out FactoryDropZone dropZone) && _readyToDrop && _pickableBoxes.Count > 0)
             {
-                if (dropZone.BoxType == _currentBoxType)
+                if (dropZone.BoxType == _currentBoxType && dropZone.HaveSpace)
                 {
                     IPickable box = _pickableBoxes.Pop();
                     box.BoxTransform.parent = dropZone.transform;

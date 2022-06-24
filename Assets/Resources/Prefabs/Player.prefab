@@ -155,6 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _inventoryPlace: {fileID: 3075298992706903440}
+  _inventoryItemOffset: {x: 0, y: 1, z: 0}
 --- !u!1 &3357419210427222676
 GameObject:
   m_ObjectHideFlags: 0

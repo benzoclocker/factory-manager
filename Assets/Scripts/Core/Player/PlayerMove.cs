@@ -1,4 +1,5 @@
-﻿using Services.Input;
+﻿using Core.GameConfigs;
+using Services.Input;
 using UnityEngine;
 
 namespace Core.Player
@@ -10,16 +11,17 @@ namespace Core.Player
         private IInputService _inputService;
 
         private Vector3 _moveDirection;
+        private float _moveSpeed;
 
-        public void Init(IInputService inputService)
+        public void Init(IInputService inputService, float moveSpeed)
         {
             _inputService = inputService;
+            _moveSpeed = moveSpeed;
         }
 
         private void Awake()
         {
             _characterController = GetComponent<CharacterController>();
-            _inputService = new InputService();
         }
 
         private void FixedUpdate()
@@ -33,7 +35,7 @@ namespace Core.Player
         }
 
         private void CalculateDirection() => 
-            _moveDirection = _inputService.Direction.normalized * 12.0f * Time.deltaTime;
+            _moveDirection = _inputService.Direction.normalized * (_moveSpeed * Time.deltaTime);
 
         private void Move() => 
             _characterController.Move(_moveDirection);
