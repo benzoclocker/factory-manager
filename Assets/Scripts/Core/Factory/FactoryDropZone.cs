@@ -7,9 +7,9 @@ namespace Core.Factory
 {
     public class FactoryDropZone : MonoBehaviour
     {
-        public Stack<IPickable> _pickableBoxes { get; private set; } = new Stack<IPickable>();
+        public Stack<IPickable> PickableBoxes { get; private set; } = new Stack<IPickable>();
         public PickableBoxType BoxType { get; private set; }
-        public bool HaveSpace => _pickableBoxes.Count < _maxBoxes; 
+        public bool HaveSpace => PickableBoxes.Count < _maxBoxes; 
         
         private int _maxBoxes;
         private MeshRenderer _meshRenderer;
@@ -30,7 +30,7 @@ namespace Core.Factory
 
         public void TakeBox(IPickable box)
         {
-            _pickableBoxes.Push(box);
+            PickableBoxes.Push(box);
             OnBoxDropped?.Invoke();
         }
     }

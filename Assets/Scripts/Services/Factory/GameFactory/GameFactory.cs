@@ -81,7 +81,7 @@ namespace Services.Factory.GameFactory
             
             foreach (FactoryDropZone dropZone in secondFactory.GetListOfDropZones())
             {
-                list.Add(dropZone._pickableBoxes);
+                list.Add(dropZone.PickableBoxes);
             }
 
             secondFactoryObject.GetComponent<Core.Factory.Factory>()
@@ -107,7 +107,7 @@ namespace Services.Factory.GameFactory
             
             foreach (FactoryDropZone dropZone in secondFactory.GetListOfDropZones())
             {
-                list.Add(dropZone._pickableBoxes);
+                list.Add(dropZone.PickableBoxes);
             }
 
             thirdFactoryObject.GetComponent<Core.Factory.Factory>()

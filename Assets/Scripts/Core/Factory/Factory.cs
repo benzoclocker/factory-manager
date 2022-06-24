@@ -8,11 +8,14 @@ namespace Core.Factory
     public class Factory : MonoBehaviour
     {
         [SerializeField] private List<FactoryDropZone> _dropZones;
+        
         private Stack<FactoryBox> _factoryBoxes = new Stack<FactoryBox>();
 
         private IFactoryWay _factoryWay;
 
         public List<FactoryDropZone> GetListOfDropZones() => _dropZones;
+
+        private bool _isFactoryWorking;
 
         public void Init(IFactoryWay factoryWay)
         {
@@ -41,7 +44,8 @@ namespace Core.Factory
         {
             while (true)
             {
-                yield return new WaitForSeconds(3.0f);
+                yield return new WaitForSeconds(4.0f);
+                
                 if (!(_factoryBoxes.Count >= _factoryWay.MaxFactoryCapacity))
                 {
                     CreateBox();
@@ -51,17 +55,29 @@ namespace Core.Factory
 
         private void StartFactory()
         {
+            if (_isFactoryWorking == false)
+            {
+                StartCoroutine(StartFactoryRoutine());
+            }
+        }
+
+        private IEnumerator StartFactoryRoutine()
+        {
+            _isFactoryWorking = true;
             while (_factoryWay.IsReadyToCreateBox)
             {
+                yield return new WaitForSeconds(3.0f);
                 CreateBox();
             }
+
+            _isFactoryWorking = false;
         }
 
         private void CreateBox()
         {
             foreach (FactoryDropZone dropZone in _dropZones)
             {
-                FactoryBox box = (FactoryBox)dropZone._pickableBoxes.Pop();
+                FactoryBox box = (FactoryBox)dropZone.PickableBoxes.Pop();
                 box.gameObject.SetActive(false);
             }
 

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c09ab5e5071944988187f7179ec6fa3c, type: 3}
   m_Name: PlayerConfig
   m_EditorClassIdentifier: 
-  PlayerMoveSpeed: 20
+  PlayerMoveSpeed: 60
   PlayerRotateSpeed: 20
   MaxBoxCount: 4
