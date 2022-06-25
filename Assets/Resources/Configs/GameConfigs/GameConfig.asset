@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35114b779a4344daa9c1984ccc486150, type: 3}
+  m_Name: GameConfig
+  m_EditorClassIdentifier: 
+  FirstFactoryBox: {fileID: 7561145628780560506, guid: 25dc3f0a81bfc9544b3d4ba9855dadb7, type: 3}
+  SecondFactoryBox: {fileID: 3066160551113514284, guid: 99128b6acc4299f47beb04c1502c785c, type: 3}
+  ThirdFactoryBox: {fileID: 6325930966724453437, guid: d57094231ef5a2d4fb93347ed1d129ad, type: 3}
+  FirstDropZoneMaterial: {fileID: 2100000, guid: f10286da220403f4c812cf61fe581b75, type: 2}
+  SecondDropZoneMaterial: {fileID: 2100000, guid: add80ad4a0511c5498d2438fb700ee48, type: 2}
+  FirstDropZoneBoxType: 0
+  SecondDropZoneBoxType: 1
+  MaxBox: 4
+  CreationTime: 2
