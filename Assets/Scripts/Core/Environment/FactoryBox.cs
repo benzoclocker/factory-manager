@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Core.Environment
 {
@@ -7,6 +8,11 @@ namespace Core.Environment
         public Transform BoxTransform { get; private set; }
         public PickableBoxType BoxType { get; private set; }
         public bool IsPickable { get; set; } = true;
+        public event Action OnUnPick;
+        public void UnPickFromFactory()
+        {
+            OnUnPick?.Invoke();
+        }
 
         public void Init(PickableBoxType boxType, Transform boxTransform)
         {

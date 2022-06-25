@@ -7,5 +7,6 @@ namespace Core.Environment
         Transform BoxTransform { get; }
         PickableBoxType BoxType { get; }
         bool IsPickable { get; set; }
+        void UnPickFromFactory();
     }
 }

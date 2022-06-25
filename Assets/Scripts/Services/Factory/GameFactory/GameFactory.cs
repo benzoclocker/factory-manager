@@ -2,7 +2,9 @@
 using Core;
 using Core.Environment;
 using Core.Factory;
+using Core.GameConfigs;
 using Core.Player;
+using Services.Factory.UIFactory;
 using Services.Input;
 using Services.Providers.AssetProvider;
 using Services.Providers.ConfigProvider;
@@ -15,12 +17,15 @@ namespace Services.Factory.GameFactory
         private readonly IAssetProvider _assetProvider;
         private readonly IInputService _inputService;
         private readonly IGameConfigProvider _configProvider;
+        private readonly IUIFactory _uiFactory;
 
-        public GameFactory(IAssetProvider assetProvider, IInputService inputService, IGameConfigProvider configProvider)
+        public GameFactory(IAssetProvider assetProvider, IInputService inputService,
+            IGameConfigProvider configProvider, IUIFactory uiFactory)
         {
             _assetProvider = assetProvider;
             _inputService = inputService;
             _configProvider = configProvider;
+            _uiFactory = uiFactory;
         }
 
         public GameObject Player { get; private set; }
@@ -34,17 +39,23 @@ namespace Services.Factory.GameFactory
 
         public GameObject CreatePlayer()
         {
-            GameObject playerObject = Object.Instantiate(_assetProvider.GetPlayerPrefab());
+            PlayerConfig config = _configProvider.GetCurrentPlayerConfig();
             
+            GameObject playerObject = Object.Instantiate(_assetProvider.GetPlayerPrefab());
+
+            ITimer timer = new Timer();
+
+            ProgressBar progressBar = playerObject.GetComponent<ProgressBar>();
+
             playerObject
                 .GetComponent<PlayerMove>()
-                .Init(_inputService, _configProvider.GetCurrentPlayerConfig().PlayerMoveSpeed);
+                .Init(_inputService, config.PlayerMoveSpeed);
             playerObject
                 .GetComponent<PlayerRotate>()
-                .Init(_inputService, _configProvider.GetCurrentPlayerConfig().PlayerRotateSpeed);
+                .Init(_inputService, config.PlayerRotateSpeed);
             playerObject
                 .GetComponent<PlayerInventory>()
-                .Init(_configProvider.GetCurrentPlayerConfig().MaxBoxCount);
+                .Init(config.MaxBoxCount, config.UnPickDelay, new Progress(progressBar, timer, config.UnPickDelay), timer);
 
             Player = playerObject;
 
@@ -59,19 +70,33 @@ namespace Services.Factory.GameFactory
 
         public GameObject CreateFirstFactory()
         {
+            GameConfig config = _configProvider.GetCurrentGameConfig();
+            
             GameObject firstFactoryObject = Object.Instantiate(_assetProvider.GetFirstFactoryPrefab(),
                 new Vector3(15.0f, 2.0f, 5.0f), Quaternion.identity);
 
+            ProgressBar progressBar = firstFactoryObject.GetComponent<ProgressBar>();
+
+            ITimer timer = new Timer();
+            
             firstFactoryObject.GetComponent<Core.Factory.Factory>()
                 .Init(
-                    new FirstFactoryWay(_configProvider.GetCurrentGameConfig().FirstFactoryBox,
-                        PickableBoxType.First, _configProvider.GetCurrentGameConfig().MaxBox));
+                    new FirstFactoryWay(config.FirstFactoryBox, 
+                        PickableBoxType.First, 
+                        config.MaxBox, 
+                        config.CreationTime), 
+                    timer, 
+                    new Progress(progressBar, timer, config.CreationTime), 
+                    _uiFactory.Alert
+                    );
             
             return firstFactoryObject;
         }
 
         public GameObject CreateSecondFactory()
         {
+            GameConfig config = _configProvider.GetCurrentGameConfig();
+            
             GameObject secondFactoryObject = Object.Instantiate(_assetProvider.GetSecondFactoryPrefab(),
                 new Vector3(0.0f, 2.0f, 5.0f), Quaternion.identity);
 
@@ -84,45 +109,64 @@ namespace Services.Factory.GameFactory
                 list.Add(dropZone.PickableBoxes);
             }
 
+            ProgressBar progressBar = secondFactory.GetComponent<ProgressBar>();
+            
+            ITimer timer = new Timer();
+
             secondFactoryObject.GetComponent<Core.Factory.Factory>()
-                .Init(new SecondFactoryWay(list, _configProvider.GetCurrentGameConfig().SecondFactoryBox,
-                    PickableBoxType.Second, _configProvider.GetCurrentGameConfig().MaxBox));
+                .Init(
+                    new SecondFactoryWay(list, config.SecondFactoryBox,
+                    PickableBoxType.Second, config.MaxBox,
+                    config.CreationTime), 
+                    timer,
+                    new Progress(progressBar, timer, config.CreationTime),
+                    _uiFactory.Alert
+                    );
             
             secondFactoryObject.GetComponentInChildren<FactoryDropZone>()
-                .Init(_configProvider.GetCurrentGameConfig().FirstDropZoneMaterial,
-                    _configProvider.GetCurrentGameConfig().FirstDropZoneBoxType,
-                    _configProvider.GetCurrentGameConfig().MaxBox);
+                .Init(config.FirstDropZoneMaterial, config.FirstDropZoneBoxType,
+                    config.MaxBox);
 
             return secondFactoryObject;
         }
 
         public GameObject CreateThirdFactory()
         {
+            GameConfig config = _configProvider.GetCurrentGameConfig();
+            
             GameObject thirdFactoryObject = Object.Instantiate(_assetProvider.GetThirdFactoryPrefab(),
                 new Vector3(-15.0f, 2.0f, 5.0f), Quaternion.identity);
             
-            Core.Factory.Factory secondFactory = thirdFactoryObject.GetComponent<Core.Factory.Factory>();
+            Core.Factory.Factory thirdFactory = thirdFactoryObject.GetComponent<Core.Factory.Factory>();
             
             List<Stack<IPickable>> list = new List<Stack<IPickable>>();
             
-            foreach (FactoryDropZone dropZone in secondFactory.GetListOfDropZones())
+            foreach (FactoryDropZone dropZone in thirdFactory.GetListOfDropZones())
             {
                 list.Add(dropZone.PickableBoxes);
             }
 
+            ProgressBar progressBar = thirdFactory.GetComponent<ProgressBar>();
+            
+            ITimer timer = new Timer();
+
             thirdFactoryObject.GetComponent<Core.Factory.Factory>()
-                .Init(new ThirdFactoryWay(list, _configProvider.GetCurrentGameConfig().ThirdFactoryBox,
-                    PickableBoxType.Third, _configProvider.GetCurrentGameConfig().MaxBox));
+                .Init(
+                    new ThirdFactoryWay(list, config.ThirdFactoryBox,
+                    PickableBoxType.Third, config.MaxBox,
+                    config.CreationTime),
+                    timer, 
+                    new Progress(progressBar, timer, config.CreationTime),
+                    _uiFactory.Alert
+                );
 
             FactoryDropZone[] factoryDropZones = thirdFactoryObject.GetComponentsInChildren<FactoryDropZone>();
             
-            factoryDropZones[0].Init(_configProvider.GetCurrentGameConfig().FirstDropZoneMaterial,
-                _configProvider.GetCurrentGameConfig().FirstDropZoneBoxType,
-                _configProvider.GetCurrentGameConfig().MaxBox);
+            factoryDropZones[0]
+                .Init(config.FirstDropZoneMaterial, config.FirstDropZoneBoxType, config.MaxBox);
             
-            factoryDropZones[1].Init(_configProvider.GetCurrentGameConfig().SecondDropZoneMaterial,
-                _configProvider.GetCurrentGameConfig().SecondDropZoneBoxType,
-                _configProvider.GetCurrentGameConfig().MaxBox);
+            factoryDropZones[1]
+                .Init(config.SecondDropZoneMaterial, config.SecondDropZoneBoxType, config.MaxBox);
 
             return thirdFactoryObject;
         }

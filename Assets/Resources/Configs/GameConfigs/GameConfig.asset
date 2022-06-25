@@ -19,4 +19,5 @@ MonoBehaviour:
   SecondDropZoneMaterial: {fileID: 2100000, guid: add80ad4a0511c5498d2438fb700ee48, type: 2}
   FirstDropZoneBoxType: 0
   SecondDropZoneBoxType: 1
-  MaxBox: 5
+  MaxBox: 4
+  CreationTime: 2

@@ -8,6 +8,7 @@ namespace Core.Factory
         List<Stack<IPickable>> DropZones { get; }
         PickableBoxType BoxType { get; }
         FactoryBox Box { get; }
+        float CreationDelay { get; }
         int MaxFactoryCapacity { get; }
         bool IsReadyToCreateBox { get; }
     }

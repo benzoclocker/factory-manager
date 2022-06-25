@@ -33,6 +33,7 @@ namespace Infrastructure.StateMachine.GameStateMachine.States
         private void CreateGameWorld()
         {
             _uiFactory.CreateControllerUI();
+            _uiFactory.CreateAlertUI();
             
             _gameFactory.CreateGround();
             _gameFactory.CreatePlayer();

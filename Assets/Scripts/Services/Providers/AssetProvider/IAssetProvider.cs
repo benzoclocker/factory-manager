@@ -12,5 +12,6 @@ namespace Services.Providers.AssetProvider
         GameObject GetGroundPrefab();
         GameObject GetControllerCanvasPrefab();
         GameObject GetCameraPrefab();
+        GameObject GetAlertUIPrefab();
     }
 }

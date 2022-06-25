@@ -11,7 +11,9 @@ namespace Services.Providers.AssetProvider
         private const string GroundPrefabPath = "Prefabs/Ground";
         private const string ControllerCanvasPrefabPath = "Prefabs/UI/ControllerCanvas";
         private const string CameraPrefabPath = "Prefabs/Main Camera";
-        
+        private const string AlertUIPrefabPath = "Prefabs/UI/TextAlertsCanvas";
+
+
         public GameObject GetPlayerPrefab() => 
             Resources.Load<GameObject>(PlayerPrefabPath);
 
@@ -32,5 +34,8 @@ namespace Services.Providers.AssetProvider
 
         public GameObject GetCameraPrefab() => 
             Resources.Load<GameObject>(CameraPrefabPath);
+
+        public GameObject GetAlertUIPrefab() => 
+            Resources.Load<GameObject>(AlertUIPrefabPath);
     }
 }

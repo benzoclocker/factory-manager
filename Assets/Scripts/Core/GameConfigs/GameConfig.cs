@@ -17,5 +17,6 @@ namespace Core.GameConfigs
         public PickableBoxType SecondDropZoneBoxType;
         
         public int MaxBox;
+        public float CreationTime;
     }
 }

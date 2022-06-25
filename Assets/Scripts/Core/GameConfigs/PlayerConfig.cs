@@ -7,6 +7,7 @@ namespace Core.GameConfigs
     {
         public float PlayerMoveSpeed;
         public float PlayerRotateSpeed;
+        public float UnPickDelay;
         public int MaxBoxCount;
     }
 }

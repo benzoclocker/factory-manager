@@ -43,7 +43,7 @@ namespace Infrastructure.StateMachine.GameStateMachine.States
             _container.RegisterSingle<IGameFactory>
             (new GameFactory
             (_container.Single<IAssetProvider>(), _container.Single<IInputService>(),
-                _container.Single<IGameConfigProvider>()));
+                _container.Single<IGameConfigProvider>(), _container.Single<IUIFactory>()));
         }
     }
 }
